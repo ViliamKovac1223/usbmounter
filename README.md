@@ -1,6 +1,13 @@
 # usbmounter
 Shell script to mount and unmount usb by dmenu.
 
+# Usage
+```
+usbmounter -FLAG
+```
+- -m        mount chosen disk
+- -u        unmount chosen disk
+
 # Dependencies 
 - notify-send
 - dmenu 
