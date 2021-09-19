@@ -5,6 +5,7 @@ print_usage() {
   echo "usbmounter -FLAG"
   echo "-m        mount chosen disk"
   echo "-u        unmount chosen disk"
+  echo "-r        use rofi instead of dmenu"
   exit 1
 }
 
@@ -13,13 +14,16 @@ while getopts 'umr' flag; do
   case "${flag}" in
     m) mount=true ;;
     u) mount=false ;;
+    r) rofi=true ;;
     *) print_usage ;;
   esac
 done
 
+[ $rofi = true ] && menu="rofi -dmenu" || menu="dmenu" # define menu system
+
 if [ $mount = true ]; then
   mountable=$(lsblk -lp | grep "part $" | awk '{print $1 " ("$4")"}') # get all not mounted partitions with their sizes
-  chosen=$(echo "$mountable" | dmenu -p "Mount partition: " | cut -d " " -f 1) # let user choose one partition by dmenu
+  chosen=$(echo "$mountable" | $menu -p "Mount partition " | cut -d " " -f 1) # let user choose one partition
 
   [ "$chosen" = "" ] && exit 1 # exit if user didn't choose any partition to mount
 
@@ -31,7 +35,7 @@ else
 
   [ "$unmountable" = "" ] && notify-send "No partition to unmount" && exit
 
-  chosen=$(echo "$unmountable" | dmenu -p "Unmount partition" | cut -d " " -f 1) # ask user for partition to unmount
+  chosen=$(echo "$unmountable" | $menu -p "Unmount partition" | cut -d " " -f 1) # ask user for partition to unmount
   [ "$chosen" = "" ] && exit 1 # exit if user didn't choose any partition to unmount
 
   output=$(udisksctl unmount -b "$chosen") # unmount disk
