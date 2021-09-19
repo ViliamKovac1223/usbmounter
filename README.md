@@ -11,19 +11,20 @@ usbmounter -FLAG
 
 # Dependencies 
 - notify-send
+- udisks2
 - dmenu or rofi
 
 ## Install dependencies on Debian
 ```bash
-sudo apt-get install libnotify-bin suckless-tools rofi
+sudo apt-get install libnotify-bin suckless-tools rofi udisks2
 ```
 
 ## Install dependencies on Ubuntu
 ```bash
-sudo apt-get install notify-osd dmenu rofi
+sudo apt-get install notify-osd dmenu rofi udisks2
 ```
 
 ## Install dependencies on Arch
 ```bash
-sudo pacman -S libnotify dmenu rofi
+sudo pacman -S libnotify dmenu rofi udisks2
 ```
