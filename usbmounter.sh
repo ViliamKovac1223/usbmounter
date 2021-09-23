@@ -9,6 +9,8 @@ print_usage() {
   exit 1
 }
 
+rofi=false
+
 [ $# = 0 ] && print_usage
 while getopts 'umr' flag; do
   case "${flag}" in
