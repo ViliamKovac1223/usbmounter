@@ -28,3 +28,6 @@ sudo apt-get install notify-osd dmenu rofi udisks2
 ```bash
 sudo pacman -S libnotify dmenu rofi udisks2
 ```
+
+# Warranty
+None of the authors, contributors, administrators, or anyone else connected with this project, in any way whatsoever, can be responsible for your use of this project.
