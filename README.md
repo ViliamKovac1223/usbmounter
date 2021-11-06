@@ -9,25 +9,27 @@ usbmounter -FLAG
 - -u        unmount chosen disk
 - -r        use rofi instead of dmenu
 - -t        use mount/umount instead of udisksctl
+- -x        copy mounted disk path to cliboard
 
 # Dependencies 
 - notify-send
 - udisks2 - optional [see Mount disk with traditional mount command](#Mount-disk-with-traditional-mount-command)
 - dmenu or rofi
+- xclip
 
 ## Install dependencies on Debian
 ```bash
-sudo apt-get install libnotify-bin suckless-tools rofi udisks2
+sudo apt-get install libnotify-bin suckless-tools rofi udisks2 xclip
 ```
 
 ## Install dependencies on Ubuntu
 ```bash
-sudo apt-get install notify-osd dmenu rofi udisks2
+sudo apt-get install notify-osd dmenu rofi udisks2 xclip
 ```
 
 ## Install dependencies on Arch
 ```bash
-sudo pacman -S libnotify dmenu rofi udisks2
+sudo pacman -S libnotify dmenu rofi udisks2 xclip
 ```
 
 # Mount disk with traditional mount command
