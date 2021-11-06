@@ -19,10 +19,12 @@ mount_disk() {
     # if there was error notify user about it
     [ "$output" = "" ] && notify-send "Mounted $disk at $mounting_point" || notify-send "$output"
     echo "$mounting_point" # print path to mounted disk
+    [ $copy = true ] && echo "$mounting_point" | xclip -selection c # copy mounted disk path to cliboard
   else
     output=$(udisksctl mount -b "$disk") # mount partition
     notify-send "$output"
     echo "$output" | awk '{print $4}' # print path to mounted disk
+    [ $copy = true ] && echo "$output" | awk '{print $4}' | xclip -selection c # copy mounted disk path to cliboard
   fi
 }
 
@@ -51,20 +53,23 @@ print_usage() {
   echo "-u        unmount chosen disk"
   echo "-r        use rofi instead of dmenu"
   echo "-t        use mount/umount instead of udisksctl"
+  echo "-x        copy mounted disk path to cliboard"
   exit 1
 }
 
 
 rofi=false
 traditional=false
+copy=false
 
 [ $# = 0 ] && print_usage
-while getopts 'tumr' flag; do
+while getopts 'tumrx' flag; do
   case "${flag}" in
     m) mount=true ;;
     u) mount=false ;;
     r) rofi=true ;;
     t) traditional=true ;;
+    x) copy=true ;;
     *) print_usage ;;
   esac
 done
@@ -95,7 +100,7 @@ if [ $mount = true ]; then
     fi
   fi
 
-  mount_disk $traditional "$privilage_provider" "$chosen" "$mounting_point" # mount disk
+  mount_disk $traditional "$privilage_provider" "$chosen" "$mounting_point" "$copy" # mount disk
 else
   partition_to_exclude="\(/$\|SWAP\|/home$\|/boot\)"
   unmountable=$(lsblk -lp | grep "part" | grep -v -e "part $" -e "$partition_to_exclude" | awk '{print $1 " ("$4")"}') # get all mounted partitions except /home, /boot, / and swap with their sizes
