@@ -18,9 +18,11 @@ mount_disk() {
     # Mounted /dev/sdx at /path/to/mount
     # if there was error notify user about it
     [ "$output" = "" ] && notify-send "Mounted $disk at $mounting_point" || notify-send "$output"
+    echo "$mounting_point" # print path to mounted disk
   else
     output=$(udisksctl mount -b "$disk") # mount partition
     notify-send "$output"
+    echo "$output" | awk '{print $4}' # print path to mounted disk
   fi
 }
 
