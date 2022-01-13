@@ -11,7 +11,7 @@ mount_disk() {
   disk=$3
   mounting_point=$4
 
-  if [ $traditional = true ]; then
+  if [ "$traditional" = true ]; then
     output=$(eval "$privilage_provider" mount "$disk" "$mounting_point") # mount partition
 
     # if there was no error make notification in syntax:
@@ -19,12 +19,13 @@ mount_disk() {
     # if there was error notify user about it
     [ "$output" = "" ] && notify-send "Mounted $disk at $mounting_point" || notify-send "$output"
     echo "$mounting_point" # print path to mounted disk
-    [ $copy = true ] && echo "$mounting_point" | xclip -selection c # copy mounted disk path to cliboard
+    [ "$copy" = true ] && echo "$mounting_point" | xclip -selection c # copy mounted disk path to cliboard
   else
     output=$(udisksctl mount -b "$disk") # mount partition
     notify-send "$output"
-    echo "$output" | awk '{print $4}' # print path to mounted disk
-    [ $copy = true ] && echo "$output" | awk '{print $4}' | xclip -selection c # copy mounted disk path to cliboard
+    # echo "$output" | awk '{$1=$2=$3="";;print $0}' # print path to mounted disk
+    echo "$output" | cut -f4- -d' ' # print path to mounted disk
+    [ "$copy" = true ] && echo "$output" | cut -f4- -d' ' | xclip -selection c # copy mounted disk path to cliboard
   fi
 }
 
@@ -33,7 +34,7 @@ umount_disk() {
   privilage_provider=$2
   disk=$3
 
-  if [ $traditional = true ]; then
+  if [ "$traditional" = true ]; then
     output=$(eval "$privilage_provider" umount "$disk") # mount partition
 
     # if there was no error make notification in syntax:
